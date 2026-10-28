@@ -248,7 +248,7 @@
     .about-photo { width: 100%; height: 380px; object-fit: cover; }
     .about-text p { color: var(--text-muted); font-size: 1.05rem; margin-bottom: 1.25rem; }
 
-    /* RIGID ASYMMETRIC GALLERY GRID WITH PAGINATION */
+    /* RIGID ASYMMETRIC GALLERY GRID (1 Main Box + 2x5 Thumbnails) */
     .gallery-grid-layout {
       display: grid;
       grid-template-columns: 2fr 1fr 1fr;
@@ -258,7 +258,7 @@
       margin: 0 auto 2rem auto;
     }
     
-    /* Exactly ONE dominant main feature box */
+    /* Exactly ONE dominant main feature box on the left */
     .gallery-main-feature {
       background: var(--bg-card);
       border: 4px solid var(--dewy-blue);
@@ -278,7 +278,7 @@
       transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
     }
 
-    /* 2 columns by 5 rows thumbnail grid for the 10 small items */
+    /* 2 columns by 5 rows thumbnail grid on the right */
     .gallery-previews-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -504,7 +504,7 @@
     <p class="section-subtitle">A chibi version of me is such a cutie. Click or hover any preview to feature it.</p>
     
     <div class="gallery-grid-layout" id="galleryGridLayout">
-      <!-- Dynamically populated by JS to ensure 1 Main Feature Box + 10 Thumbnails per page -->
+      <!-- Dynamically populated by JS: Exactly 1 Main Feature Box + 10 Thumbnails in 2x5 grid -->
     </div>
 
     <!-- 8-Page Navigation Control Panel -->
@@ -774,14 +774,13 @@
         if (!galleryGridLayout) return;
         galleryGridLayout.innerHTML = '';
 
-        // Generate a deterministic 11-image set for each of the 8 pages by shifting the array
         const startIndex = pageIndex % galleryPhotos.length;
         const pageSet = [];
         for (let i = 0; i < 11; i++) {
           pageSet.push(galleryPhotos[(startIndex + i) % galleryPhotos.length]);
         }
 
-        // 1. Main Featured Box (1st image in current page set)
+        // 1. Dominant Main Feature Box (1 large picture)
         const mainBox = document.createElement('div');
         mainBox.className = 'gallery-main-feature';
         mainBox.id = 'mainFeatureBox';
@@ -793,7 +792,7 @@
         mainBox.appendChild(mainImg);
         galleryGridLayout.appendChild(mainBox);
 
-        // 2. 2x5 Grid of Thumbnails (Remaining 10 images in current page set)
+        // 2. 2x5 Grid of Thumbnails (10 smaller photos on the right)
         const previewsGrid = document.createElement('div');
         previewsGrid.className = 'gallery-previews-grid';
         previewsGrid.id = 'previewsGrid';
