@@ -51,6 +51,7 @@
     
     /* GITHUB-COMPATIBLE EMBEDDED DATA URI CURSOR */
     html { 
+      scroll-behavior: smooth; 
       font-family: 'Inter', sans-serif; 
       color: var(--text-dark); 
       background-color: #2b1d14; 
@@ -58,7 +59,7 @@
       cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 24 24'%3E%3Cpath fill='%238B5A2B' d='M2 21h18v-2H2M20 8h-2V5h2m0-2H4v10a4 4 0 0 0 4 4h6a4 4 0 0 0 4-4v-1h2a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2z'/%3E%3C/svg%3E") 16 16, auto; 
     }
     
-    body { overflow-x: hidden; color: var(--text-dark); background: linear-gradient(rgba(245, 235, 220, 0.75), rgba(245, 235, 220, 0.75)), url('coffee.jpg') no-repeat center center fixed; background-size: cover; min-height: 100vh; display: flex; flex-direction: column; justify-content: space-between; }
+    body { overflow-x: hidden; color: var(--text-dark); background: linear-gradient(rgba(245, 235, 220, 0.75), rgba(245, 235, 220, 0.75)), url('coffee.jpg') no-repeat center center fixed; background-size: cover; }
     body.dark-mode { background: linear-gradient(rgba(20, 15, 12, 0.85), rgba(20, 15, 12, 0.85)), url('coffee.jpg') no-repeat center center fixed; background-size: cover; }
 
     a, button, input, .social-link, .playlist-item, .xox-cell, .rps-btn, .game-tab-btn, .dropdown-toggle { cursor: pointer; }
@@ -98,11 +99,7 @@
     a { text-decoration: none; color: inherit; transition: var(--transition); }
     ul { list-style: none; }
     img { max-width: 100%; height: auto; display: block; }
-    
-    /* MULTI-PAGE VIEW SYSTEM CONTAINER */
-    .page-section { display: none; padding: 6rem 1.5rem 4rem 1.5rem; max-width: 1200px; margin: 0 auto; width: 100%; animation: fadeInPage 0.4s ease; }
-    .page-section.active-page { display: block; }
-    @keyframes fadeInPage { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+    section { padding: 5rem 1.5rem; max-width: 1200px; margin: 0 auto; scroll-margin-top: 5rem; }
 
     .section-title { font-size: 2.25rem; font-weight: 800; text-align: center; margin-bottom: 0.5rem; color: var(--text-dark); }
     .section-subtitle { text-align: center; color: var(--text-muted); margin-bottom: 3rem; font-size: 1.1rem; }
@@ -211,7 +208,7 @@
     .dropdown-menu.show { display: block; }
     .dropdown-menu a { display: block; color: var(--text-dark); padding: 0.75rem 1rem; font-weight: 600; font-size: 0.95rem; border-bottom: 1px solid var(--cloud-puff); transition: var(--transition); }
     .dropdown-menu a:last-child { border-bottom: none; }
-    .dropdown-menu a:hover, .dropdown-menu a.active-link { background-color: var(--buttercup-sky); color: #1E293B; padding-left: 1.25rem; }
+    .dropdown-menu a:hover { background-color: var(--buttercup-sky); color: #1E293B; padding-left: 1.25rem; }
 
     .theme-toggle-btn { background: var(--cloud-puff); border: 2px solid var(--dewy-blue); color: var(--text-dark); width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; }
 
@@ -230,13 +227,13 @@
       background-size: cover;
       background-position: center center;
       background-repeat: no-repeat;
-      border-radius: var(--radius-md);
-      padding: 4rem 1.5rem;
-      border: 2px solid var(--dewy-blue);
-      box-shadow: var(--shadow-lg);
+      border-bottom-right-radius: 60px;
+      border-bottom-left-radius: 60px;
+      padding-top: 6rem;
+      padding-bottom: 4rem;
     }
-    .hero-section { display: flex; align-items: center; justify-content: center; }
-    .hero-container-centered { display: flex; flex-direction: column; align-items: center; text-align: center; width: 100%; max-width: 800px; margin: 0 auto; }
+    .hero-section { min-height: calc(100vh - 6rem); display: flex; align-items: center; justify-content: center; }
+    .hero-container-centered { display: flex; flex-direction: column; align-items: center; text-align: center; width: 100%; max-width: 800px; margin: 0 auto; padding: 0 1.5rem; }
     .hero-photo-wrapper { margin-bottom: 2rem; }
     .hero-portrait { width: 280px; height: 280px; object-fit: cover; border-radius: 30px; border: 6px solid var(--bg-card); box-shadow: var(--shadow-lg); }
     .hero-text h1 { font-family: 'Pacifico', cursive; font-size: 2.8rem; font-weight: 700; margin-bottom: 1rem; color: #FFE08A; text-shadow: 0 2px 8px rgba(0,0,0,0.5); }
@@ -319,7 +316,7 @@
     .form-group { margin-bottom: 1.25rem; }
     .form-group label { display: block; font-weight: 700; margin-bottom: 0.5rem; }
     .form-control { width: 100%; padding: 0.85rem 1rem; border: 2px solid var(--cloud-puff); border-radius: var(--radius-sm); font-size: 1rem; background-color: var(--bg-main); color: var(--text-dark); }
-    footer { background: var(--bg-dark); color: var(--text-light); text-align: center; padding: 2.5rem 1.5rem; margin-top: 4rem; width: 100%; }
+    footer { background: var(--bg-dark); color: var(--text-light); text-align: center; padding: 2.5rem 1.5rem; margin-top: 4rem; }
 
     @media (max-width: 768px) {
       .about-grid { grid-template-columns: 1fr; text-align: center; }
@@ -352,7 +349,7 @@
   <!-- NAVBAR WITH EXPLORE DROPDOWN -->
   <header class="navbar">
     <div class="nav-container">
-      <a href="#" class="brand-logo" data-page="home">
+      <a href="#home" class="brand-logo">
         <img src="ID.jpg" alt="ID" class="nav-id-img" onerror="this.onerror=null; this.src='ID.png';">
         <span>Jhondave</span>
       </a>
@@ -361,14 +358,14 @@
         <div class="dropdown">
           <button class="dropdown-toggle" id="dropdownToggleBtn">Explore ▾</button>
           <div class="dropdown-menu" id="dropdownMenu">
-            <a href="#" data-page="home" class="nav-link-item">Home</a>
-            <a href="#" data-page="about" class="nav-link-item">About</a>
-            <a href="#" data-page="gallery" class="nav-link-item">Gallery</a>
-            <a href="#" data-page="skills" class="nav-link-item">Skills</a>
-            <a href="#" data-page="projects" class="nav-link-item">Projects</a>
-            <a href="#" data-page="playlist" class="nav-link-item">Playlist</a>
-            <a href="#" data-page="games" class="nav-link-item">Games</a>
-            <a href="#" data-page="contact" class="nav-link-item">Contact</a>
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#gallery">Gallery</a>
+            <a href="#skills">Skills</a>
+            <a href="#projects">Projects</a>
+            <a href="#playlist">Playlist</a>
+            <a href="#games">Games</a>
+            <a href="#contact">Contact</a>
           </div>
         </div>
         <button id="themeToggleBtn" class="theme-toggle-btn" title="Switch Theme"><span id="themeIcon">🌙</span></button>
@@ -389,29 +386,27 @@
     </a>
   </aside>
 
-  <!-- ================= PAGE 1: HOME ================= -->
-  <main id="page-home" class="page-section active-page">
-    <div class="hero-wrapper">
-      <section class="hero-section">
-        <div class="hero-container-centered">
-          <div class="hero-photo-wrapper">
-            <img src="CPEPRO1.jpg" alt="Jhondave Pelayo Cortes" class="hero-portrait" onerror="this.onerror=null; this.src='CPEPRO1.png';">
-          </div>
-          <div class="hero-text">
-            <h1>Cortes, Jhondave Pelayo</h1>
-            <p>A driven, adaptable, artistic, and humble builder who consistently turns challenges into a stepping stones for growth while staying deeply grounded in my craft.</p>
-            <div class="btn-group">
-              <button class="btn btn-primary nav-link-item" data-page="projects">View My Work</button>
-              <button class="btn btn-secondary nav-link-item" data-page="contact">Get In Touch</button>
-            </div>
+  <!-- HERO -->
+  <div class="hero-wrapper" id="home">
+    <section class="hero-section">
+      <div class="hero-container-centered">
+        <div class="hero-photo-wrapper">
+          <img src="CPEPRO1.jpg" alt="Jhondave Pelayo Cortes" class="hero-portrait" onerror="this.onerror=null; this.src='CPEPRO1.png';">
+        </div>
+        <div class="hero-text">
+          <h1>Cortes, Jhondave Pelayo</h1>
+          <p>A driven, adaptable, artistic, and humble builder who consistently turns challenges into a stepping stones for growth while staying deeply grounded in my craft.</p>
+          <div class="btn-group">
+            <a href="#projects" class="btn btn-primary">View My Work</a>
+            <a href="#contact" class="btn btn-secondary">Get In Touch</a>
           </div>
         </div>
-      </section>
-    </div>
-  </main>
+      </div>
+    </section>
+  </div>
 
-  <!-- ================= PAGE 2: ABOUT ================= -->
-  <main id="page-about" class="page-section">
+  <!-- ABOUT -->
+  <section id="about">
     <h2 class="section-title">About Me</h2>
     <p class="section-subtitle">Passionate about software creation and digital media</p>
     <div class="about-grid">
@@ -421,10 +416,10 @@
         <p>When I'm not coding or studying hardware architecture, I enjoy working on graphical media, interactive interface designs, and learning new tools.</p>
       </div>
     </div>
-  </main>
+  </section>
 
-  <!-- ================= PAGE 3: GALLERY ================= -->
-  <main id="page-gallery" class="page-section">
+  <!-- GALLERY -->
+  <section id="gallery">
     <h2 class="section-title">My Photo Gallery</h2>
     <p class="section-subtitle">A chibi version of me is such a cutie.</p>
     <div class="slideshow-container">
@@ -445,10 +440,10 @@
         <span class="dot active" data-index="0"></span><span class="dot" data-index="1"></span><span class="dot" data-index="2"></span><span class="dot" data-index="3"></span><span class="dot" data-index="4"></span><span class="dot" data-index="5"></span><span class="dot" data-index="6"></span><span class="dot" data-index="7"></span><span class="dot" data-index="8"></span><span class="dot" data-index="9"></span><span class="dot" data-index="10"></span>
       </div>
     </div>
-  </main>
+  </section>
 
-  <!-- ================= PAGE 4: SKILLS ================= -->
-  <main id="page-skills" class="page-section">
+  <!-- SKILLS -->
+  <section id="skills">
     <h2 class="section-title">My Skills</h2>
     <p class="section-subtitle">Technologies and tools I work with</p>
     <div class="skills-grid">
@@ -457,10 +452,10 @@
       <div class="skill-card"><div class="skill-img-wrapper"><img src="UImedia.jpg" alt="UI Design" class="skill-img" onerror="this.onerror=null; this.src='UImedia.png';"></div><div class="skill-content"><h3>UI & Media Design</h3><p>Digital graphic design, visual assets, and interactive presentations.</p></div></div>
       <div class="skill-card"><div class="skill-img-wrapper"><img src="hardware.jpg" alt="Hardware" class="skill-img" onerror="this.onerror=null; this.src='hardware.png';"></div><div class="skill-content"><h3>Hardware & Systems</h3><p>Computer engineering fundamentals, RFID integrations, and monitoring.</p></div></div>
     </div>
-  </main>
+  </section>
 
-  <!-- ================= PAGE 5: PROJECTS ================= -->
-  <main id="page-projects" class="page-section">
+  <!-- PROJECTS -->
+  <section id="projects">
     <h2 class="section-title">Featured Projects</h2>
     <p class="section-subtitle">Some of my recent academic & personal builds</p>
     <div class="projects-grid">
@@ -489,10 +484,10 @@
         </div>
       </div>
     </div>
-  </main>
+  </section>
 
-  <!-- ================= PAGE 6: PLAYLIST ================= -->
-  <main id="page-playlist" class="page-section">
+  <!-- PLAYLIST -->
+  <section id="playlist">
     <h2 class="section-title">My Go-to Playlist</h2>
     <p class="section-subtitle">Vibe with me, click a song on my playlist to play.</p>
     <div class="youtube-playlist-wrapper">
@@ -509,10 +504,10 @@
         <div class="playlist-item" data-file="Laymedown.mp4"><span>🎵</span><div><h4>Lay Me Down</h4><span>Sam Smith</span></div></div>
       </div>
     </div>
-  </main>
+  </section>
 
-  <!-- ================= PAGE 7: GAMES ================= -->
-  <main id="page-games" class="page-section">
+  <!-- GAMES -->
+  <section id="games">
     <h2 class="section-title">Mini games I play</h2>
     <p class="section-subtitle">Take a quick break and play Sudoku, XOX, or RPS!</p>
     <div class="games-section-wrapper">
@@ -580,10 +575,10 @@
       </div>
 
     </div>
-  </main>
+  </section>
 
-  <!-- ================= PAGE 8: CONTACT ================= -->
-  <main id="page-contact" class="page-section">
+  <!-- CONTACT -->
+  <section id="contact">
     <h2 class="section-title">Get In Touch</h2>
     <p class="section-subtitle">Have a question or want to collaborate?</p>
     <div class="contact-container">
@@ -595,36 +590,16 @@
         <button type="submit" class="btn btn-primary" style="width: 100%;">Send Message</button>
       </form>
     </div>
-  </main>
+  </section>
 
   <footer>
     <p>&copy; 2026 Cortes, Jhondave Pelayo. All Rights Reserved.</p>
   </footer>
 
   <script>
-    // Multi-Page Switching & Explore Dropdown Toggle Logic
+    // Explore Dropdown Toggle Script
     const dropdownToggleBtn = document.getElementById('dropdownToggleBtn');
     const dropdownMenu = document.getElementById('dropdownMenu');
-    const pageSections = document.querySelectorAll('.page-section');
-    const navLinks = document.querySelectorAll('.nav-link-item');
-
-    function switchPage(pageId) {
-      pageSections.forEach(section => {
-        section.classList.remove('active-page');
-      });
-      const targetPage = document.getElementById(`page-${pageId}`);
-      if (targetPage) {
-        targetPage.classList.add('active-page');
-        window.scrollTo(0, 0);
-      }
-      navLinks.forEach(link => {
-        if (link.getAttribute('data-page') === pageId) {
-          link.classList.add('active-link');
-        } else {
-          link.classList.remove('active-link');
-        }
-      });
-    }
 
     if (dropdownToggleBtn && dropdownMenu) {
       dropdownToggleBtn.addEventListener('click', (e) => {
@@ -632,17 +607,14 @@
         dropdownMenu.classList.toggle('show');
       });
 
-      navLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
-          e.preventDefault();
-          const pageId = link.getAttribute('data-page');
-          if (pageId) {
-            switchPage(pageId);
-          }
+      // Close menu when clicking any link inside it
+      dropdownMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
           dropdownMenu.classList.remove('show');
         });
       });
 
+      // Close menu when clicking outside
       window.addEventListener('click', () => {
         if (dropdownMenu.classList.contains('show')) {
           dropdownMenu.classList.remove('show');
@@ -659,6 +631,7 @@
       cursor.style.left = `${lastMouseX}px`;
       cursor.style.top = `${lastMouseY}px`;
 
+      // Create trailing smoke particle on movement
       if (Math.random() < 0.3) {
         const particle = document.createElement('div');
         particle.className = 'cursor-smoke-particle';
