@@ -48,9 +48,43 @@
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; font-family: 'Inter', sans-serif; color: var(--text-dark); background-color: #2b1d14; line-height: 1.6; }
+    html { scroll-behavior: smooth; font-family: 'Inter', sans-serif; color: var(--text-dark); background-color: #2b1d14; line-height: 1.6; cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="%238B5A2B" d="M2 21h18v-2H2M20 8h-2V5h2m0-2H4v10a4 4 0 0 0 4 4h6a4 4 0 0 0 4-4v-1h2a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2z"/></svg>') 16 16, auto; }
     body { overflow-x: hidden; color: var(--text-dark); background: linear-gradient(rgba(245, 235, 220, 0.75), rgba(245, 235, 220, 0.75)), url('coffee.jpg') no-repeat center center fixed; background-size: cover; }
     body.dark-mode { background: linear-gradient(rgba(20, 15, 12, 0.85), rgba(20, 15, 12, 0.85)), url('coffee.jpg') no-repeat center center fixed; background-size: cover; }
+
+    a, button, input, .social-link, .playlist-item, .xox-cell, .rps-btn, .game-tab-btn { cursor: pointer; }
+
+    /* CUSTOM COFFEE CUP CURSOR WITH SMOKE EFFECT */
+    #custom-cursor {
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 999999;
+      transform: translate(-50%, -50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: transform 0.05s ease-out;
+    }
+    .cursor-cup {
+      font-size: 24px;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+    }
+    .cursor-smoke-particle {
+      position: absolute;
+      top: -12px;
+      width: 6px;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.7);
+      border-radius: 50%;
+      pointer-events: none;
+      animation: smokeFloat 0.8s forwards linear;
+    }
+    @keyframes smokeFloat {
+      0% { transform: translate(0, 0) scale(0.8); opacity: 0.8; }
+      100% { transform: translate(calc(var(--rand-x) * 15px), -25px) scale(2); opacity: 0; }
+    }
 
     a { text-decoration: none; color: inherit; transition: var(--transition); }
     ul { list-style: none; }
@@ -278,6 +312,11 @@
 </head>
 <body>
 
+  <!-- CUSTOM COFFEE CURSOR ELEMENT -->
+  <div id="custom-cursor">
+    <div class="cursor-cup">☕</div>
+  </div>
+
   <!-- BREWING COFFEE PRELOADER -->
   <div id="preloader">
     <div class="brew-animation-container">
@@ -398,7 +437,7 @@
     </div>
   </section>
 
-  <!-- PROJECTS (FIXED Portfolio.jpg) -->
+  <!-- PROJECTS -->
   <section id="projects">
     <h2 class="section-title">Featured Projects</h2>
     <p class="section-subtitle">Some of my recent academic & personal builds</p>
@@ -461,7 +500,7 @@
         <button class="game-tab-btn" data-target="rpsPanel">2D Rock Paper Scissors</button>
       </div>
       
-      <!-- SUDOKU PANEL (SUPER EASY) -->
+      <!-- SUDOKU PANEL -->
       <div id="sudokuPanel" class="game-panel active">
         <div style="margin-bottom: 1rem;"><button class="btn btn-primary" id="newSudokuBtn" style="padding: 0.3rem 0.8rem; font-size: 0.8rem;">New Game</button></div>
         <div class="sudoku-container-wrap">
@@ -469,9 +508,12 @@
         </div>
       </div>
 
-      <!-- XOX PANEL -->
+      <!-- XOX PANEL WITH NEW GAME BUTTON -->
       <div id="xoxPanel" class="game-panel">
-        <div style="margin-bottom: 1rem; font-weight: 700;" id="xoxStatus">Player X's Turn</div>
+        <div style="margin-bottom: 1rem; display: flex; justify-content: center; align-items: center; gap: 1rem;">
+          <span id="xoxStatus" style="font-weight: 700;">Player X's Turn</span>
+          <button class="btn btn-primary" id="newXoxBtn" style="padding: 0.3rem 0.8rem; font-size: 0.8rem;">New Game</button>
+        </div>
         <div class="xox-board" id="xoxBoard">
           <div class="xox-cell" data-index="0"></div><div class="xox-cell" data-index="1"></div><div class="xox-cell" data-index="2"></div>
           <div class="xox-cell" data-index="3"></div><div class="xox-cell" data-index="4"></div><div class="xox-cell" data-index="5"></div>
@@ -479,12 +521,15 @@
         </div>
       </div>
 
-      <!-- ROCK PAPER SCISSORS 2D ANIMATED PANEL -->
+      <!-- ROCK PAPER SCISSORS PANEL WITH NEW GAME BUTTON -->
       <div id="rpsPanel" class="game-panel">
         <div class="rps-container">
-          <div class="rps-scoreboard">
-            <span>You: <strong id="playerScore">0</strong></span>
-            <span>CPU: <strong id="computerScore">0</strong></span>
+          <div style="display: flex; justify-content: center; align-items: center; gap: 1.5rem;">
+            <div class="rps-scoreboard">
+              <span>You: <strong id="playerScore">0</strong></span>
+              <span>CPU: <strong id="computerScore">0</strong></span>
+            </div>
+            <button class="btn btn-primary" id="newRpsBtn" style="padding: 0.3rem 0.8rem; font-size: 0.8rem;">New Game</button>
           </div>
           
           <div class="rps-arena">
@@ -532,6 +577,27 @@
   </footer>
 
   <script>
+    // Custom Coffee Cursor with Smoke Effect logic
+    const cursor = document.getElementById('custom-cursor');
+    let lastMouseX = 0, lastMouseY = 0;
+    document.addEventListener('mousemove', (e) => {
+      lastMouseX = e.clientX;
+      lastMouseY = e.clientY;
+      cursor.style.left = `${lastMouseX}px`;
+      cursor.style.top = `${lastMouseY}px`;
+
+      // Create trailing smoke particle on movement
+      if (Math.random() < 0.3) {
+        const particle = document.createElement('div');
+        particle.className = 'cursor-smoke-particle';
+        particle.style.setProperty('--rand-x', (Math.random() - 0.5));
+        particle.style.left = `${lastMouseX}px`;
+        particle.style.top = `${lastMouseY - 10}px`;
+        document.body.appendChild(particle);
+        setTimeout(() => particle.remove(), 800);
+      }
+    });
+
     // Audio synthesizer for mini-game sound effects
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     function playSound(type) {
@@ -624,7 +690,7 @@
         });
       });
 
-      // SUPER EASY SUDOKU SETUP (>60% pre-filled cells)
+      // SUPER EASY SUDOKU SETUP
       const sudokuGrid = document.getElementById('sudokuGrid');
       const solution = [5,3,4,6,7,8,9,1,2,6,7,2,1,9,5,3,4,8,1,9,8,3,4,2,5,6,7,8,5,9,7,6,1,4,2,3,4,2,6,8,5,3,7,9,1,7,1,3,9,2,4,8,5,6,9,6,1,5,3,7,2,8,4,2,8,7,4,1,9,6,3,5,3,4,5,2,8,6,1,7,9];
       
@@ -658,12 +724,24 @@
       initSudoku();
       document.getElementById('newSudokuBtn')?.addEventListener('click', () => { playSound('click'); initSudoku(); });
 
-      // TIC-TAC-TOE SETUP
+      // TIC-TAC-TOE SETUP WITH NEW GAME BUTTON
       const xoxCells = document.querySelectorAll('.xox-cell');
       const xoxStatus = document.getElementById('xoxStatus');
       let board = ['', '', '', '', '', '', '', '', ''];
       let turn = 'X';
       let active = true;
+
+      function initXox() {
+        board = ['', '', '', '', '', '', '', '', ''];
+        turn = 'X';
+        active = true;
+        xoxStatus.textContent = "Player X's Turn";
+        xoxCells.forEach(cell => {
+          cell.textContent = '';
+          cell.style.color = '';
+        });
+      }
+
       xoxCells.forEach(cell => {
         cell.addEventListener('click', () => {
           const i = cell.getAttribute('data-index');
@@ -684,8 +762,9 @@
           xoxStatus.textContent = `Player ${turn}'s Turn`;
         });
       });
+      document.getElementById('newXoxBtn')?.addEventListener('click', () => { playSound('click'); initXox(); });
 
-      // 2D ANIMATED ROCK PAPER SCISSORS SETUP
+      // ROCK PAPER SCISSORS SETUP WITH NEW GAME BUTTON
       let pScore = 0, cScore = 0;
       const rpsResult = document.getElementById('rpsResult');
       const playerScore = document.getElementById('playerScore');
@@ -702,7 +781,6 @@
           const choices = ['rock', 'paper', 'scissors'];
           const cChoice = choices[Math.floor(Math.random() * choices.length)];
           
-          // Trigger 2D animation pulse
           playerAvatar.classList.add('animating');
           computerAvatar.classList.add('animating');
           playerAvatar.textContent = '🔄';
@@ -736,6 +814,16 @@
             }
           }, 350);
         });
+      });
+
+      document.getElementById('newRpsBtn')?.addEventListener('click', () => {
+        playSound('click');
+        pScore = 0; cScore = 0;
+        playerScore.textContent = '0';
+        computerScore.textContent = '0';
+        playerAvatar.textContent = '❓';
+        computerAvatar.textContent = '❓';
+        rpsResult.textContent = 'Choose your weapon!';
       });
     });
   </script>
