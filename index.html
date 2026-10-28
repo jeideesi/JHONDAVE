@@ -48,7 +48,17 @@
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; font-family: 'Inter', sans-serif; color: var(--text-dark); background-color: #2b1d14; line-height: 1.6; cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="%238B5A2B" d="M2 21h18v-2H2M20 8h-2V5h2m0-2H4v10a4 4 0 0 0 4 4h6a4 4 0 0 0 4-4v-1h2a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2z"/></svg>') 16 16, auto; }
+    
+    /* GITHUB-COMPATIBLE EMBEDDED DATA URI CURSOR */
+    html { 
+      scroll-behavior: smooth; 
+      font-family: 'Inter', sans-serif; 
+      color: var(--text-dark); 
+      background-color: #2b1d14; 
+      line-height: 1.6; 
+      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 24 24'%3E%3Cpath fill='%238B5A2B' d='M2 21h18v-2H2M20 8h-2V5h2m0-2H4v10a4 4 0 0 0 4 4h6a4 4 0 0 0 4-4v-1h2a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2z'/%3E%3C/svg%3E") 16 16, auto; 
+    }
+    
     body { overflow-x: hidden; color: var(--text-dark); background: linear-gradient(rgba(245, 235, 220, 0.75), rgba(245, 235, 220, 0.75)), url('coffee.jpg') no-repeat center center fixed; background-size: cover; }
     body.dark-mode { background: linear-gradient(rgba(20, 15, 12, 0.85), rgba(20, 15, 12, 0.85)), url('coffee.jpg') no-repeat center center fixed; background-size: cover; }
 
@@ -500,9 +510,12 @@
         <button class="game-tab-btn" data-target="rpsPanel">2D Rock Paper Scissors</button>
       </div>
       
-      <!-- SUDOKU PANEL -->
+      <!-- SUDOKU PANEL WITH CHECK & NEW GAME -->
       <div id="sudokuPanel" class="game-panel active">
-        <div style="margin-bottom: 1rem;"><button class="btn btn-primary" id="newSudokuBtn" style="padding: 0.3rem 0.8rem; font-size: 0.8rem;">New Game</button></div>
+        <div style="margin-bottom: 1rem; display: flex; justify-content: center; gap: 0.5rem;">
+          <button class="btn btn-primary" id="newSudokuBtn" style="padding: 0.3rem 0.8rem; font-size: 0.8rem;">New Game</button>
+          <button class="btn btn-secondary" id="checkSudokuBtn" style="padding: 0.3rem 0.8rem; font-size: 0.8rem;">Check Answers</button>
+        </div>
         <div class="sudoku-container-wrap">
           <div class="sudoku-grid" id="sudokuGrid"></div>
         </div>
@@ -690,7 +703,7 @@
         });
       });
 
-      // SUPER EASY SUDOKU SETUP
+      // SUPER EASY SUDOKU SETUP WITH ANSWER CHECKING
       const sudokuGrid = document.getElementById('sudokuGrid');
       const solution = [5,3,4,6,7,8,9,1,2,6,7,2,1,9,5,3,4,8,1,9,8,3,4,2,5,6,7,8,5,9,7,6,1,4,2,3,4,2,6,8,5,3,7,9,1,7,1,3,9,2,4,8,5,6,9,6,1,5,3,7,2,8,4,2,8,7,4,1,9,6,3,5,3,4,5,2,8,6,1,7,9];
       
@@ -712,17 +725,48 @@
         solution.forEach((val, idx) => {
           const input = document.createElement('input');
           input.type = 'text'; input.maxLength = 1; input.className = 'sudoku-cell';
-          input.addEventListener('input', () => playSound('click'));
+          input.dataset.solution = val;
+          input.addEventListener('input', () => {
+            playSound('click');
+            input.style.backgroundColor = '';
+          });
           if(superEasyMask[idx] === 1) { 
             input.value = val; 
             input.style.background = '#FFF7D6'; 
             input.readOnly = true; 
+            input.dataset.prefilled = "true";
           }
           sudokuGrid.appendChild(input);
         });
       }
       initSudoku();
       document.getElementById('newSudokuBtn')?.addEventListener('click', () => { playSound('click'); initSudoku(); });
+
+      // Check Sudoku Answers Functionality
+      document.getElementById('checkSudokuBtn')?.addEventListener('click', () => {
+        playSound('click');
+        const cells = sudokuGrid.querySelectorAll('.sudoku-cell');
+        let allCorrect = true;
+        cells.forEach(cell => {
+          if (cell.dataset.prefilled === "true") return;
+          const userVal = cell.value.trim();
+          const correctVal = cell.dataset.solution;
+          if (userVal === "") {
+            cell.style.backgroundColor = '#fed7d7'; // light red for empty
+            allCorrect = false;
+          } else if (userVal === correctVal) {
+            cell.style.backgroundColor = '#c6f6d5'; // light green for correct
+          } else {
+            cell.style.backgroundColor = '#fed7d7'; // light red for wrong
+            allCorrect = false;
+          }
+        });
+        if (allCorrect) {
+          playSound('win');
+        } else {
+          playSound('lose');
+        }
+      });
 
       // TIC-TAC-TOE SETUP WITH NEW GAME BUTTON
       const xoxCells = document.querySelectorAll('.xox-cell');
