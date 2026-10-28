@@ -260,19 +260,109 @@
       transform: translateY(0);
     }
 
-    /* SKILLS & PROJECTS */
+    /* SKILLS & PROJECTS WITH ENHANCED HOVER & ENLARGE POINTER */
     .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; }
-    .skill-card { background: var(--bg-card); border-radius: var(--radius-md); border: 2px solid var(--cloud-puff); overflow: hidden; display: flex; flex-direction: column; }
+    .skill-card { 
+      background: var(--bg-card); 
+      border-radius: var(--radius-md); 
+      border: 2px solid var(--cloud-puff); 
+      overflow: hidden; 
+      display: flex; 
+      flex-direction: column; 
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .skill-card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+    }
     .skill-img-wrapper { width: 100%; height: 170px; background-color: var(--dewy-blue); overflow: hidden; }
-    .skill-img { width: 100%; height: 100%; object-fit: cover; }
+    .skill-img { 
+      width: 100%; 
+      height: 100%; 
+      object-fit: cover; 
+      cursor: pointer;
+      transition: transform 0.4s ease;
+    }
+    .skill-img:hover { transform: scale(1.05); }
     .skill-content { padding: 1.5rem; }
+
     .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
-    .project-card { background: var(--bg-card); border-radius: var(--radius-md); overflow: hidden; border: 2px solid var(--cloud-puff); }
+    .project-card { 
+      background: var(--bg-card); 
+      border-radius: var(--radius-md); 
+      overflow: hidden; 
+      border: 2px solid var(--cloud-puff); 
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .project-card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+    }
     .project-img-wrapper { width: 100%; height: 200px; background-color: var(--dewy-blue); overflow: hidden; }
-    .project-img { width: 100%; height: 100%; object-fit: cover; }
+    .project-img { 
+      width: 100%; 
+      height: 100%; 
+      object-fit: cover; 
+      cursor: pointer;
+      transition: transform 0.4s ease;
+    }
+    .project-img:hover { transform: scale(1.05); }
     .project-info { padding: 1.5rem; }
     .project-tags { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.5rem; }
     .tag { background: var(--cloud-puff); color: var(--text-dark); font-size: 0.8rem; padding: 0.25rem 0.6rem; border-radius: 6px; }
+
+    /* LIGHTBOX MODAL OVERLAY STYLES */
+    .lightbox-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.85);
+      z-index: 100000;
+      justify-content: center;
+      align-items: center;
+      padding: 1.5rem;
+      backdrop-filter: blur(5px);
+      animation: fadeInModal 0.3s ease forwards;
+    }
+    .lightbox-modal.active {
+      display: flex;
+    }
+    @keyframes fadeInModal {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .lightbox-content {
+      max-width: 90%;
+      max-height: 85vh;
+      border-radius: var(--radius-md);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+      border: 3px solid var(--dewy-blue);
+      object-fit: contain;
+      transform: scale(0.95);
+      animation: zoomInModal 0.3s ease forwards;
+    }
+    @keyframes zoomInModal {
+      to { transform: scale(1); }
+    }
+    .lightbox-close-btn {
+      position: absolute;
+      top: 1.5rem;
+      right: 2rem;
+      color: #FFFFFF;
+      font-size: 2.5rem;
+      font-weight: 700;
+      cursor: pointer;
+      line-height: 1;
+      transition: color 0.2s ease, transform 0.2s ease;
+      user-select: none;
+    }
+    .lightbox-close-btn:hover {
+      color: var(--sunwashed);
+      transform: scale(1.15);
+    }
 
     /* PLAYLIST & GAMES */
     .youtube-playlist-wrapper { display: grid; grid-template-columns: 1.3fr 0.7fr; gap: 2rem; background: linear-gradient(rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.88)), url('musicbg.jpg'); background-size: cover; padding: 2rem; border-radius: var(--radius-md); border: 2px solid var(--dewy-blue); align-items: center; }
@@ -408,7 +498,7 @@
     </section>
   </main>
 
-  <!-- PAGE 3: GALLERY PAGE (gallery.html) - REDESIGNED 10-ITEM GRID WITH HOVER EFFECTS -->
+  <!-- PAGE 3: GALLERY PAGE (gallery.html) - REDESIGNED 10-ITEM GRID -->
   <main id="gallery.html" class="page-view">
     <section>
       <h2 class="section-title">My Photo Gallery</h2>
@@ -459,28 +549,40 @@
     </section>
   </main>
 
-  <!-- PAGE 4: SKILLS PAGE (skills.html) -->
+  <!-- PAGE 4: SKILLS PAGE (skills.html) WITH ENLARGABLE IMAGES -->
   <main id="skills.html" class="page-view">
     <section>
       <h2 class="section-title">My Skills</h2>
       <p class="section-subtitle">Technologies and tools I work with</p>
       <div class="skills-grid">
-        <div class="skill-card"><div class="skill-img-wrapper"><img src="webdev.jpg" alt="Web Dev" class="skill-img" onerror="this.onerror=null; this.src='webdev.png';"></div><div class="skill-content"><h3>Web Development</h3><p>Responsive HTML5 layouts, modern CSS3 animations, and JS functionality.</p></div></div>
-        <div class="skill-card"><div class="skill-img-wrapper"><img src="python.jpg" alt="Python" class="skill-img" onerror="this.onerror=null; this.src='python.png';"></div><div class="skill-content"><h3>Python Programming</h3><p>CLI tools, Student Management Systems with CRUD, and JSON persistence.</p></div></div>
-        <div class="skill-card"><div class="skill-img-wrapper"><img src="UImedia.jpg" alt="UI Design" class="skill-img" onerror="this.onerror=null; this.src='UImedia.png';"></div><div class="skill-content"><h3>UI & Media Design</h3><p>Digital graphic design, visual assets, and interactive presentations.</p></div></div>
-        <div class="skill-card"><div class="skill-img-wrapper"><img src="hardware.jpg" alt="Hardware" class="skill-img" onerror="this.onerror=null; this.src='hardware.png';"></div><div class="skill-content"><h3>Hardware & Systems</h3><p>Computer engineering fundamentals, RFID integrations, and monitoring.</p></div></div>
+        <div class="skill-card">
+          <div class="skill-img-wrapper"><img src="webdev.jpg" alt="Web Development" class="skill-img lightbox-trigger" onerror="this.onerror=null; this.src='webdev.png';"></div>
+          <div class="skill-content"><h3>Web Development</h3><p>Responsive HTML5 layouts, modern CSS3 animations, and JS functionality.</p></div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-img-wrapper"><img src="python.jpg" alt="Python Programming" class="skill-img lightbox-trigger" onerror="this.onerror=null; this.src='python.png';"></div>
+          <div class="skill-content"><h3>Python Programming</h3><p>CLI tools, Student Management Systems with CRUD, and JSON persistence.</p></div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-img-wrapper"><img src="UImedia.jpg" alt="UI & Media Design" class="skill-img lightbox-trigger" onerror="this.onerror=null; this.src='UImedia.png';"></div>
+          <div class="skill-content"><h3>UI & Media Design</h3><p>Digital graphic design, visual assets, and interactive presentations.</p></div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-img-wrapper"><img src="hardware.jpg" alt="Hardware & Systems" class="skill-img lightbox-trigger" onerror="this.onerror=null; this.src='hardware.png';"></div>
+          <div class="skill-content"><h3>Hardware & Systems</h3><p>Computer engineering fundamentals, RFID integrations, and monitoring.</p></div>
+        </div>
       </div>
     </section>
   </main>
 
-  <!-- PAGE 5: PROJECTS PAGE (projects.html) -->
+  <!-- PAGE 5: PROJECTS PAGE (projects.html) WITH ENLARGABLE IMAGES -->
   <main id="projects.html" class="page-view">
     <section>
       <h2 class="section-title">Featured Projects</h2>
       <p class="section-subtitle">Some of my recent academic & personal builds</p>
       <div class="projects-grid">
         <div class="project-card">
-          <div class="project-img-wrapper"><img src="studman.jpg" alt="Student Management System" class="project-img" onerror="this.onerror=null; this.src='studman.png';"></div>
+          <div class="project-img-wrapper"><img src="studman.jpg" alt="Student Management System" class="project-img lightbox-trigger" onerror="this.onerror=null; this.src='studman.png';"></div>
           <div class="project-info">
             <h3>Student Management System</h3>
             <p>Python-driven application with CRUD capabilities and JSON persistence.</p>
@@ -488,7 +590,7 @@
           </div>
         </div>
         <div class="project-card">
-          <div class="project-img-wrapper"><img src="Portfolio.jpg" alt="Portfolio" class="project-img" onerror="this.onerror=null; this.src='portfoilio.jpg'; this.onerror=function(){this.src='portfolio.png';};"></div>
+          <div class="project-img-wrapper"><img src="Portfolio.jpg" alt="Personal Portfolio Website" class="project-img lightbox-trigger" onerror="this.onerror=null; this.src='portfoilio.jpg'; this.onerror=function(){this.src='portfolio.png';};"></div>
           <div class="project-info">
             <h3>Personal Portfolio Website</h3>
             <p>Modern responsive portfolio website featuring smooth animations.</p>
@@ -496,7 +598,7 @@
           </div>
         </div>
         <div class="project-card">
-          <div class="project-img-wrapper"><img src="rfid.jpg" alt="RFID Attendance System" class="project-img" onerror="this.onerror=null; this.src='RFID.jpg'; this.onerror=function(){this.src='rfid.png';};"></div>
+          <div class="project-img-wrapper"><img src="rfid.jpg" alt="RFID Attendance System" class="project-img lightbox-trigger" onerror="this.onerror=null; this.src='RFID.jpg'; this.onerror=function(){this.src='rfid.png';};"></div>
           <div class="project-info">
             <h3>RFID Attendance System</h3>
             <p>Co-authored research project integrating automated logging.</p>
@@ -604,6 +706,12 @@
     </section>
   </main>
 
+  <!-- FULL-SCREEN IMAGE LIGHTBOX MODAL -->
+  <div class="lightbox-modal" id="imageLightboxModal">
+    <span class="lightbox-close-btn" id="lightboxCloseBtn">&times;</span>
+    <img class="lightbox-content" id="lightboxImage" alt="Enlarged Preview">
+  </div>
+
   <footer>
     <p>&copy; 2026 Cortes, Jhondave Pelayo. All Rights Reserved.</p>
   </footer>
@@ -669,6 +777,39 @@
 
     document.addEventListener('DOMContentLoaded', () => {
       setTimeout(() => document.getElementById('preloader')?.classList.add('fade-out'), 1400);
+
+      // --- LIGHTBOX MODAL LOGIC ---
+      const lightboxModal = document.getElementById('imageLightboxModal');
+      const lightboxImage = document.getElementById('lightboxImage');
+      const lightboxCloseBtn = document.getElementById('lightboxCloseBtn');
+
+      // Add click listener to all project and skill images
+      document.querySelectorAll('.lightbox-trigger').forEach(img => {
+        img.addEventListener('click', () => {
+          playSound('click');
+          lightboxImage.src = img.src;
+          lightboxModal.classList.add('active');
+        });
+      });
+
+      // Close handlers
+      function closeLightbox() {
+        lightboxModal.classList.remove('active');
+      }
+
+      lightboxCloseBtn?.addEventListener('click', closeLightbox);
+      
+      lightboxModal?.addEventListener('click', (e) => {
+        if (e.target === lightboxModal) {
+          closeLightbox();
+        }
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && lightboxModal.classList.contains('active')) {
+          closeLightbox();
+        }
+      });
 
       // Dropdown Navigation
       const dropdownToggleBtn = document.getElementById('dropdownToggleBtn');
