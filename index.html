@@ -812,7 +812,9 @@
       <h2 class="section-title">Get In Touch</h2>
       <p class="section-subtitle">Have a question or want to collaborate?</p>
       <div class="contact-container">
-        <form action="https://formsubmit.co/jhondavecortes@gmail.com" method="POST">
+        <!-- Hidden iframe to handle cross-origin desktop submissions safely without CORS errors -->
+        <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
+        <form action="https://formsubmit.co/jhondavecortes@gmail.com" method="POST" target="hidden_iframe" id="contactForm">
           <input type="hidden" name="_captcha" value="false">
           <div class="form-group"><label>Your Name</label><input type="text" name="name" class="form-control" required></div>
           <div class="form-group"><label>Your Email</label><input type="email" name="email" class="form-control" required></div>
@@ -944,36 +946,24 @@
         }
       });
 
-      // --- RELIABLE STANDARD AJAX FORM SUBMISSION WITH COFFEE POPUP ---
-      const contactForm = document.querySelector('main#contact.html form, main[id="contact.html"] form');
+      // --- ROBUST DESKTOP/MOBILE COMPATIBLE IFRAME FORM SUBMISSION ---
+      const contactForm = document.getElementById('contactForm');
       const coffeePopupModal = document.getElementById('coffeePopupModal');
       const coffeePopupCloseBtn = document.getElementById('coffeePopupCloseBtn');
+      const hiddenIframe = document.getElementById('hidden_iframe');
 
-      if (contactForm) {
-        contactForm.addEventListener('submit', async function (e) {
-          e.preventDefault();
-          const formData = new FormData(contactForm);
+      if (contactForm && hiddenIframe) {
+        let isSubmitting = false;
 
-          try {
-            // Submit via standard background no-cors/cors fallback to prevent GitHub fetch blocks
-            const response = await fetch(contactForm.action, {
-              method: 'POST',
-              body: formData,
-              headers: {
-                'Accept': 'application/json'
-              }
-            });
-
-            // Trigger the success modal regardless of cross-origin opaque status if request completes
+        contactForm.addEventListener('submit', function (e) {
+          isSubmitting = true;
+          // Let the form submit naturally into the hidden iframe, bypassing desktop CORS/fetch blocks entirely
+          setTimeout(() => {
             contactForm.reset();
             playSound('win');
             coffeePopupModal?.classList.add('active');
-          } catch (error) {
-            // Fallback for strict network blockades: submit data and trigger popup anyway
-            contactForm.reset();
-            playSound('win');
-            coffeePopupModal?.classList.add('active');
-          }
+            isSubmitting = false;
+          }, 600);
         });
       }
 
@@ -1027,7 +1017,6 @@
       function smokeLoop() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        // Continuously emit particles at the last recorded coordinate even during idle
         particles.push({
           x: lastMouseX + (Math.random() - 0.5) * 12,
           y: lastMouseY + (Math.random() - 0.5) * 12,
