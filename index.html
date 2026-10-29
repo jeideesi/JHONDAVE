@@ -817,8 +817,8 @@
       <h2 class="section-title">Happy to serve you.</h2>
       <p class="section-subtitle">Have something to say? send us a message and have a cup of coffee.</p>
       <div class="contact-container">
-        <form action="https://web3forms.com" method="POST" id="contactForm">
-          <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY_HERE">
+        <form action="https://formsubmit.co/jaydavidzero23@gmail.com" method="POST" id="contactForm">
+          <input type="hidden" name="_captcha" value="false">
           <div class="form-group"><label>Your Name</label><input type="text" name="name" class="form-control" required></div>
           <div class="form-group"><label>Your Email</label><input type="email" name="email" class="form-control" required></div>
           <div class="form-group"><label>Message</label><textarea name="message" rows="5" class="form-control" required></textarea></div>
@@ -951,7 +951,7 @@
         }
       });
 
-      // --- WEB3FORMS FETCH SUBMISSION HANDLER ---
+      // --- FORMSUBMIT JSON AJAX FETCH SUBMISSION HANDLER ---
       const contactForm = document.getElementById('contactForm');
       const coffeePopupModal = document.getElementById('coffeePopupModal');
       const coffeePopupCloseBtn = document.getElementById('coffeePopupCloseBtn');
@@ -959,31 +959,28 @@
       if (contactForm) {
         contactForm.addEventListener('submit', function (e) {
           e.preventDefault();
-          const formData = new FormData(contactForm);
-          const object = Object.fromEntries(formData);
-          const json = JSON.stringify(object);
-
-          fetch('https://api.web3forms.com/submit', {
+          
+          fetch(contactForm.action, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
               'Accept': 'application/json'
             },
-            body: json
+            body: JSON.stringify(Object.fromEntries(new FormData(contactForm)))
           })
           .then(async (response) => {
-            let jsonResponse = await response.json();
-            if (response.status === 200) {
+            if (response.ok) {
               contactForm.reset();
               playSound('win');
               coffeePopupModal?.classList.add('active');
             } else {
-              alert(jsonResponse.message || "Something went wrong!");
+              let errData = await response.json().catch(() => ({}));
+              alert(errData.message || "Something went wrong with FormSubmit!");
             }
           })
           .catch(error => {
-            console.log(error);
-            alert("Network error! Please try again.");
+            console.error('Submission error:', error);
+            alert("Network error! Please check your connection.");
           });
         });
       }
