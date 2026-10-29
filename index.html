@@ -612,6 +612,7 @@
         <div class="about-text">
           <p>I am a dedicated Computer Engineering student passionate about exploring technology, building web projects, and creating modern digital experiences.</p>
           <p>When I'm not coding or studying hardware architecture, I enjoy working on graphical media, interactive interface designs, and learning new tools.</p>
+          <p>A punctual, detail-oriented, and artistic builder fueled by a love for graphic design, I love a calming palette of gray, brown, and khaki, and I do believe in a day without a cup of iced coffee, isn't just long, it's completely black and white.</p>
         </div>
       </div>
     </section>
@@ -911,7 +912,7 @@
     document.addEventListener('DOMContentLoaded', () => {
       setTimeout(() => document.getElementById('preloader')?.classList.add('fade-out'), 1400);
 
-      // --- LIGHTBOX MODAL LOGIC (GALLERY, PROFILES, SKILLS, PROJECTS, ABOUT ME) ---
+      // --- LIGHTBOX MODAL LOGIC ---
       const lightboxModal = document.getElementById('addonLightboxModal');
       const lightboxImage = document.getElementById('addonLightboxImg');
       const lightboxCloseBtn = document.getElementById('addonLightboxClose');
@@ -950,7 +951,7 @@
         }
       });
 
-      // --- ROBUST DESKTOP/MOBILE COMPATIBLE IFRAME FORM SUBMISSION ---
+      // --- ROBUST IFRAME FORM SUBMISSION ---
       const contactForm = document.getElementById('contactForm');
       const coffeePopupModal = document.getElementById('coffeePopupModal');
       const coffeePopupCloseBtn = document.getElementById('coffeePopupCloseBtn');
@@ -991,7 +992,7 @@
         window.addEventListener('click', () => dropdownMenu.classList.remove('show'));
       }
 
-      // --- FEATURE 2: IDLE MOUSE CURSOR SMOKE TRAIL SCRIPT ---
+      // --- MOUSE CURSOR SMOKE TRAIL ---
       const canvas = document.createElement('canvas');
       canvas.id = 'addon-smoke-canvas';
       document.body.appendChild(canvas);
