@@ -952,12 +952,11 @@
       if (contactForm) {
         contactForm.addEventListener('submit', async (e) => {
           e.preventDefault();
-          const formData = new FormData(contactForm);
 
           try {
             const response = await fetch(contactForm.action, {
               method: 'POST',
-              body: formData,
+              body: new FormData(contactForm),
               headers: {
                 'Accept': 'application/json'
               }
