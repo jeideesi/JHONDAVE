@@ -944,35 +944,49 @@
         }
       });
 
-      // --- CUSTOM AJAX FORM SUBMISSION WITH COFFEE POPUP ---
+      // --- CUSTOM AJAX FORM SUBMISSION WITH COFFEE POPUP (JSON ENDPOINT) ---
       const contactForm = document.querySelector('main#contact.html form, main[id="contact.html"] form');
       const coffeePopupModal = document.getElementById('coffeePopupModal');
       const coffeePopupCloseBtn = document.getElementById('coffeePopupCloseBtn');
 
       if (contactForm) {
-        contactForm.addEventListener('submit', async (e) => {
+        // Dynamically append hidden captcha bypass field if missing
+        if (!contactForm.querySelector('input[name="_captcha"]')) {
+          const captchaInput = document.createElement('input');
+          captchaInput.type = 'hidden';
+          captchaInput.name = '_captcha';
+          captchaInput.value = 'false';
+          contactForm.appendChild(captchaInput);
+        }
+
+        contactForm.addEventListener('submit', function (e) {
           e.preventDefault();
 
-          try {
-            const response = await fetch(contactForm.action, {
-              method: 'POST',
-              body: new FormData(contactForm),
-              headers: {
-                'Accept': 'application/json'
-              }
-            });
+          // Convert form entries into a JSON payload object
+          const formData = new FormData(contactForm);
+          const jsonPayload = JSON.stringify(Object.fromEntries(formData));
 
-            if (response.ok) {
-              contactForm.reset();
-              playSound('win');
-              coffeePopupModal.classList.add('active');
-            } else {
-              alert('Oops! Something went wrong submitting your message.');
-            }
-          } catch (error) {
-            console.error('Form submission network error:', error);
-            alert('Network error. Please check your connection.');
-          }
+          fetch(contactForm.action, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
+            },
+            body: jsonPayload
+          })
+            .then(response => {
+              if (response.ok) {
+                contactForm.reset();
+                playSound('win');
+                coffeePopupModal?.classList.add('active');
+              } else {
+                alert('Oops! Something went wrong submitting your message.');
+              }
+            })
+            .catch(error => {
+              console.error('Form submission network error:', error);
+              alert('Network error. Please check your connection.');
+            });
         });
       }
 
