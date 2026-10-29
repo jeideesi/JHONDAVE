@@ -103,20 +103,6 @@
       transition: transform 0.05s ease-out;
     }
     .cursor-cup { font-size: 24px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); }
-    .cursor-smoke-particle {
-      position: absolute;
-      top: -12px;
-      width: 6px;
-      height: 6px;
-      background: rgba(255, 255, 255, 0.7);
-      border-radius: 50%;
-      pointer-events: none;
-      animation: smokeFloat 0.8s forwards linear;
-    }
-    @keyframes smokeFloat {
-      0% { transform: translate(0, 0) scale(0.8); opacity: 0.8; }
-      100% { transform: translate(calc(var(--rand-x) * 15px), -25px) scale(2); opacity: 0; }
-    }
 
     a { text-decoration: none; color: inherit; transition: var(--transition); }
     ul { list-style: none; }
@@ -188,7 +174,8 @@
     .hero-section { min-height: calc(85vh - 6rem); display: flex; align-items: center; justify-content: center; padding: 0 1.5rem; }
     .hero-container-centered { display: flex; flex-direction: column; align-items: center; text-align: center; width: 100%; max-width: 800px; margin: 0 auto; }
     .hero-photo-wrapper { margin-bottom: 2rem; }
-    .hero-portrait { width: 280px; height: 280px; object-fit: cover; border-radius: 30px; border: 6px solid var(--bg-card); box-shadow: var(--shadow-lg); }
+    .hero-portrait { width: 280px; height: 280px; object-fit: cover; border-radius: 30px; border: 6px solid var(--bg-card); box-shadow: var(--shadow-lg); cursor: pointer; transition: transform 0.3s ease; }
+    .hero-portrait:hover { transform: scale(1.03); }
     .hero-text h1 { font-family: 'Pacifico', cursive; font-size: 2.8rem; font-weight: 700; margin-bottom: 1rem; color: #FFE08A; text-shadow: 0 2px 8px rgba(0,0,0,0.5); }
     .hero-text p { font-size: 1.15rem; color: #e2e8f0; margin-bottom: 2rem; line-height: 1.7; max-width: 700px; margin-left: auto; margin-right: auto; }
     .btn-group { display: flex; justify-content: center; gap: 1rem; }
@@ -260,7 +247,7 @@
       transform: translateY(0);
     }
 
-    /* SKILLS & PROJECTS WITH ENHANCED HOVER & ENLARGE POINTER */
+    /* SKILLS & PROJECTS */
     .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; }
     .skill-card { 
       background: var(--bg-card); 
@@ -311,43 +298,35 @@
     .project-tags { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.5rem; }
     .tag { background: var(--cloud-puff); color: var(--text-dark); font-size: 0.8rem; padding: 0.25rem 0.6rem; border-radius: 6px; }
 
-    /* LIGHTBOX MODAL OVERLAY STYLES */
-    .lightbox-modal {
+    /* LIGHTBOX MODAL OVERLAY STYLES (FEATURE 1) */
+    .addon-lightbox-modal {
       display: none;
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      inset: 0;
       background-color: rgba(0, 0, 0, 0.85);
       z-index: 100000;
       justify-content: center;
       align-items: center;
       padding: 1.5rem;
       backdrop-filter: blur(5px);
-      animation: fadeInModal 0.3s ease forwards;
+      animation: addonFadeIn 0.3s ease forwards;
     }
-    .lightbox-modal.active {
+    .addon-lightbox-modal.active {
       display: flex;
     }
-    @keyframes fadeInModal {
+    @keyframes addonFadeIn {
       from { opacity: 0; }
       to { opacity: 1; }
     }
-    .lightbox-content {
+    .addon-lightbox-content {
       max-width: 90%;
       max-height: 85vh;
       border-radius: var(--radius-md);
       box-shadow: 0 20px 40px rgba(0,0,0,0.5);
       border: 3px solid var(--dewy-blue);
       object-fit: contain;
-      transform: scale(0.95);
-      animation: zoomInModal 0.3s ease forwards;
     }
-    @keyframes zoomInModal {
-      to { transform: scale(1); }
-    }
-    .lightbox-close-btn {
+    .addon-lightbox-close {
       position: absolute;
       top: 1.5rem;
       right: 2rem;
@@ -355,13 +334,57 @@
       font-size: 2.5rem;
       font-weight: 700;
       cursor: pointer;
+      user-select: none;
       line-height: 1;
       transition: color 0.2s ease, transform 0.2s ease;
-      user-select: none;
     }
-    .lightbox-close-btn:hover {
+    .addon-lightbox-close:hover {
       color: var(--sunwashed);
       transform: scale(1.15);
+    }
+
+    /* FEATURE 2: IDLE MOUSE CURSOR SMOKE TRAIL CANVAS */
+    #addon-smoke-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 999998;
+    }
+
+    /* FEATURE 3: COFFEE STEAM ANIMATION */
+    .addon-steam-wrapper {
+      position: absolute;
+      top: -45px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 45px;
+      pointer-events: none;
+      display: flex;
+      justify-content: space-around;
+      z-index: 10;
+    }
+    .addon-steam-line {
+      width: 6px;
+      height: 40px;
+      background: linear-gradient(to top, rgba(255, 242, 178, 0.7), rgba(255, 255, 255, 0));
+      border-radius: 50% / 20%;
+      filter: blur(2px);
+      animation: addonSteamDrift 2.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+      opacity: 0;
+    }
+    .addon-steam-line:nth-child(1) { animation-delay: 0s; }
+    .addon-steam-line:nth-child(2) { animation-delay: 0.7s; }
+    .addon-steam-line:nth-child(3) { animation-delay: 1.4s; }
+
+    @keyframes addonSteamDrift {
+      0% { transform: translateY(15px) scaleX(0.4) rotate(0deg); opacity: 0; }
+      35% { opacity: 0.75; }
+      70% { transform: translateY(-20px) scaleX(1.4) rotate(6deg); opacity: 0.35; }
+      100% { transform: translateY(-45px) scaleX(2) rotate(-6deg); opacity: 0; }
     }
 
     /* PLAYLIST & GAMES */
@@ -420,9 +443,14 @@
   <!-- CUSTOM COFFEE CURSOR -->
   <div id="custom-cursor"><div class="cursor-cup">☕</div></div>
 
-  <!-- BREWING PRELOADER -->
+  <!-- BREWING PRELOADER WITH FEATURE 3 COFFEE STEAM -->
   <div id="preloader">
     <div class="brew-animation-container">
+      <div class="addon-steam-wrapper">
+        <div class="addon-steam-line"></div>
+        <div class="addon-steam-line"></div>
+        <div class="addon-steam-line"></div>
+      </div>
       <div class="brew-steam"><span></span><span></span><span></span></div>
       <div class="brew-cup"><div class="brew-liquid"></div></div>
     </div>
@@ -498,7 +526,7 @@
     </section>
   </main>
 
-  <!-- PAGE 3: GALLERY PAGE (gallery.html) - REDESIGNED 10-ITEM GRID -->
+  <!-- PAGE 3: GALLERY PAGE (gallery.html) -->
   <main id="gallery.html" class="page-view">
     <section>
       <h2 class="section-title">My Photo Gallery</h2>
@@ -549,7 +577,7 @@
     </section>
   </main>
 
-  <!-- PAGE 4: SKILLS PAGE (skills.html) WITH ENLARGABLE IMAGES -->
+  <!-- PAGE 4: SKILLS PAGE (skills.html) -->
   <main id="skills.html" class="page-view">
     <section>
       <h2 class="section-title">My Skills</h2>
@@ -575,7 +603,7 @@
     </section>
   </main>
 
-  <!-- PAGE 5: PROJECTS PAGE (projects.html) WITH ENLARGABLE IMAGES -->
+  <!-- PAGE 5: PROJECTS PAGE (projects.html) -->
   <main id="projects.html" class="page-view">
     <section>
       <h2 class="section-title">Featured Projects</h2>
@@ -706,10 +734,10 @@
     </section>
   </main>
 
-  <!-- FULL-SCREEN IMAGE LIGHTBOX MODAL -->
-  <div class="lightbox-modal" id="imageLightboxModal">
-    <span class="lightbox-close-btn" id="lightboxCloseBtn">&times;</span>
-    <img class="lightbox-content" id="lightboxImage" alt="Enlarged Preview">
+  <!-- FEATURE 1: LIGHTBOX MODAL OVERLAY -->
+  <div class="addon-lightbox-modal" id="addonLightboxModal">
+    <span class="addon-lightbox-close" id="addonLightboxClose">&times;</span>
+    <img class="addon-lightbox-content" id="addonLightboxImg" alt="Enlarged Preview">
   </div>
 
   <footer>
@@ -778,21 +806,23 @@
     document.addEventListener('DOMContentLoaded', () => {
       setTimeout(() => document.getElementById('preloader')?.classList.add('fade-out'), 1400);
 
-      // --- LIGHTBOX MODAL LOGIC ---
-      const lightboxModal = document.getElementById('imageLightboxModal');
-      const lightboxImage = document.getElementById('lightboxImage');
-      const lightboxCloseBtn = document.getElementById('lightboxCloseBtn');
+      // --- FEATURE 1: LIGHTBOX MODAL LOGIC (HERO PROFILE IMAGE & SKILLS/PROJECTS) ---
+      const lightboxModal = document.getElementById('addonLightboxModal');
+      const lightboxImage = document.getElementById('addonLightboxImg');
+      const lightboxCloseBtn = document.getElementById('addonLightboxClose');
 
-      // Add click listener to all project and skill images
-      document.querySelectorAll('.lightbox-trigger').forEach(img => {
-        img.addEventListener('click', () => {
+      // Target homepage hero portrait, skill images, and project images
+      const lightboxTriggers = document.querySelectorAll('.hero-portrait, .lightbox-trigger');
+
+      lightboxTriggers.forEach(img => {
+        img.addEventListener('click', (e) => {
+          e.preventDefault();
           playSound('click');
           lightboxImage.src = img.src;
           lightboxModal.classList.add('active');
         });
       });
 
-      // Close handlers
       function closeLightbox() {
         lightboxModal.classList.remove('active');
       }
@@ -825,26 +855,69 @@
         window.addEventListener('click', () => dropdownMenu.classList.remove('show'));
       }
 
-      // Coffee Cursor with Smoke Effect
-      const cursor = document.getElementById('custom-cursor');
-      let lastMouseX = 0, lastMouseY = 0;
-      document.addEventListener('mousemove', (e) => {
+      // --- FEATURE 2: IDLE MOUSE CURSOR SMOKE TRAIL SCRIPT ---
+      const canvas = document.createElement('canvas');
+      canvas.id = 'addon-smoke-canvas';
+      document.body.appendChild(canvas);
+      const ctx = canvas.getContext('2d');
+
+      function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      window.addEventListener('resize', resizeCanvas);
+      resizeCanvas();
+
+      let particles = [];
+      let lastMouseX = window.innerWidth / 2;
+      let lastMouseY = window.innerHeight / 2;
+
+      window.addEventListener('mousemove', (e) => {
         lastMouseX = e.clientX;
         lastMouseY = e.clientY;
-        if (cursor) {
-          cursor.style.left = `${lastMouseX}px`;
-          cursor.style.top = `${lastMouseY}px`;
-        }
-        if (Math.random() < 0.3) {
-          const particle = document.createElement('div');
-          particle.className = 'cursor-smoke-particle';
-          particle.style.setProperty('--rand-x', (Math.random() - 0.5));
-          particle.style.left = `${lastMouseX}px`;
-          particle.style.top = `${lastMouseY - 10}px`;
-          document.body.appendChild(particle);
-          setTimeout(() => particle.remove(), 800);
-        }
       });
+
+      function smokeLoop() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Continuously emit particles at the last recorded coordinate even during idle
+        particles.push({
+          x: lastMouseX + (Math.random() - 0.5) * 12,
+          y: lastMouseY + (Math.random() - 0.5) * 12,
+          size: Math.random() * 6 + 4,
+          maxSize: Math.random() * 28 + 22,
+          speedX: (Math.random() - 0.5) * 1.2,
+          speedY: -Math.random() * 1.4 - 0.6,
+          opacity: Math.random() * 0.28 + 0.1,
+          growth: Math.random() * 0.5 + 0.25
+        });
+
+        for (let i = particles.length - 1; i >= 0; i--) {
+          let p = particles[i];
+          p.x += p.speedX;
+          p.y += p.speedY;
+          p.size += p.growth;
+          p.opacity -= 0.007;
+
+          if (p.opacity <= 0 || p.size >= p.maxSize) {
+            particles.splice(i, 1);
+            continue;
+          }
+
+          ctx.save();
+          ctx.beginPath();
+          let gradient = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size);
+          gradient.addColorStop(0, `rgba(255, 255, 255, ${p.opacity})`);
+          gradient.addColorStop(0.5, `rgba(220, 230, 245, ${p.opacity * 0.5})`);
+          gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+          ctx.fillStyle = gradient;
+          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.restore();
+        }
+        requestAnimationFrame(smokeLoop);
+      }
+      smokeLoop();
 
       // Dark Mode Toggle
       const themeBtn = document.getElementById('themeToggleBtn');
