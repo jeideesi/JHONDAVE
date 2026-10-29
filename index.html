@@ -1117,14 +1117,14 @@
           input.type = 'text'; input.maxLength = 1; input.className = 'sudoku-cell';
           input.dataset.solution = val;
           if(superEasyMask[idx] === 1) { 
-            input.value = val; input.style.background = '#FFF7D6'; input.readOnly = true; 
+            input.value = val; input.style.background = 'var(--cloud-puff)'; input.style.color = 'var(--text-dark)'; input.readOnly = true; 
           } else {
             input.addEventListener('input', () => {
               playSound('click');
               const userVal = input.value.trim();
               if (userVal === "") input.style.backgroundColor = '';
-              else if (parseInt(userVal, 10) === val) { input.style.backgroundColor = '#c6f6d5'; checkSudokuCompletion(); }
-              else input.style.backgroundColor = '#fed7d7';
+              else if (parseInt(userVal, 10) === val) { input.style.backgroundColor = '#c6f6d5'; input.style.color = '#1E293B'; checkSudokuCompletion(); }
+              else { input.style.backgroundColor = '#fed7d7'; input.style.color = '#1E293B'; }
             });
           }
           sudokuGrid.appendChild(input);
