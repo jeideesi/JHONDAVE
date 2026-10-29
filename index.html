@@ -511,9 +511,11 @@
 
     /* CONTACT & FOOTER */
     .contact-container { max-width: 600px; margin: 0 auto; background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), url('email.jpg'); background-size: cover; padding: 2.5rem; border-radius: var(--radius-md); border: 2px solid var(--dewy-blue); }
+    body.dark-mode .contact-container { background: linear-gradient(rgba(30, 41, 59, 0.9), rgba(30, 41, 59, 0.9)), url('email.jpg'); background-size: cover; }
     .form-group { margin-bottom: 1.25rem; }
-    .form-group label { display: block; font-weight: 700; margin-bottom: 0.5rem; }
+    .form-group label { display: block; font-weight: 700; margin-bottom: 0.5rem; color: var(--text-dark); }
     .form-control { width: 100%; padding: 0.85rem 1rem; border: 2px solid var(--cloud-puff); border-radius: var(--radius-sm); font-size: 1rem; background-color: var(--bg-main); color: var(--text-dark); }
+    .form-control::placeholder { color: var(--text-muted); opacity: 0.7; }
     footer { background: var(--bg-dark); color: var(--text-light); text-align: center; padding: 2.5rem 1.5rem; margin-top: auto; }
 
     @media (max-width: 1024px) {
@@ -812,13 +814,14 @@
   <!-- PAGE 8: CONTACT PAGE (contact.html) -->
   <main id="contact.html" class="page-view">
     <section>
-      <h2 class="section-title">Get In Touch</h2>
-      <p class="section-subtitle">Have a question or want to collaborate?</p>
+      <h2 class="section-title">Happy to serve you.</h2>
+      <p class="section-subtitle">Have something to say? send us a message and have a cup of coffee.</p>
       <div class="contact-container">
         <!-- Hidden iframe for cross-origin submission handling -->
         <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
         <form action="https://formsubmit.co/jaydavidzero23@gmail.com" method="POST" target="hidden_iframe" id="contactForm">
           <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_template" value="table">
           <div class="form-group"><label>Your Name</label><input type="text" name="name" class="form-control" required></div>
           <div class="form-group"><label>Your Email</label><input type="email" name="email" class="form-control" required></div>
           <div class="form-group"><label>Message</label><textarea name="message" rows="5" class="form-control" required></textarea></div>
