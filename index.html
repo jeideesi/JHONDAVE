@@ -142,7 +142,7 @@
     .navbar { position: fixed; top: 0; left: 0; width: 100%; background: var(--navbar-bg); backdrop-filter: blur(12px); z-index: 1000; border-bottom: 2px solid var(--cloud-puff); box-shadow: var(--shadow-sm); }
     .nav-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0.8rem 1.5rem; }
     .brand-logo { display: flex; align-items: center; gap: 0.75rem; font-size: 1.3rem; font-weight: 800; color: var(--text-dark); }
-    .nav-id-img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid var(--morning-breeze); }
+    .nav-id-img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid var(--morning-breeze); cursor: pointer; }
     .nav-right-controls { display: flex; align-items: center; gap: 1.25rem; }
 
     .dropdown { position: relative; display: inline-block; }
@@ -806,13 +806,13 @@
     document.addEventListener('DOMContentLoaded', () => {
       setTimeout(() => document.getElementById('preloader')?.classList.add('fade-out'), 1400);
 
-      // --- FEATURE 1: LIGHTBOX MODAL LOGIC (HERO PROFILE IMAGE & SKILLS/PROJECTS) ---
+      // --- FEATURE 1: LIGHTBOX MODAL LOGIC (DUAL PROFILE IMAGES, SKILLS & PROJECTS) ---
       const lightboxModal = document.getElementById('addonLightboxModal');
       const lightboxImage = document.getElementById('addonLightboxImg');
       const lightboxCloseBtn = document.getElementById('addonLightboxClose');
 
-      // Target homepage hero portrait, skill images, and project images
-      const lightboxTriggers = document.querySelectorAll('.hero-portrait, .lightbox-trigger');
+      // Target navbar logo, hero profile image, skill images, and project images
+      const lightboxTriggers = document.querySelectorAll('.nav-id-img, .hero-portrait, .lightbox-trigger');
 
       lightboxTriggers.forEach(img => {
         img.addEventListener('click', (e) => {
