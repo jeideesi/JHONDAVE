@@ -817,11 +817,8 @@
       <h2 class="section-title">Happy to serve you.</h2>
       <p class="section-subtitle">Have something to say? send us a message and have a cup of coffee.</p>
       <div class="contact-container">
-        <!-- Hidden iframe for cross-origin submission handling -->
-        <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
-        <form action="https://formsubmit.co/jaydavidzero23@gmail.com" method="POST" target="hidden_iframe" id="contactForm">
-          <input type="hidden" name="_captcha" value="false">
-          <input type="hidden" name="_template" value="table">
+        <form action="https://web3forms.com" method="POST" id="contactForm">
+          <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY_HERE">
           <div class="form-group"><label>Your Name</label><input type="text" name="name" class="form-control" required></div>
           <div class="form-group"><label>Your Email</label><input type="email" name="email" class="form-control" required></div>
           <div class="form-group"><label>Message</label><textarea name="message" rows="5" class="form-control" required></textarea></div>
@@ -954,19 +951,40 @@
         }
       });
 
-      // --- ROBUST IFRAME FORM SUBMISSION ---
+      // --- WEB3FORMS FETCH SUBMISSION HANDLER ---
       const contactForm = document.getElementById('contactForm');
       const coffeePopupModal = document.getElementById('coffeePopupModal');
       const coffeePopupCloseBtn = document.getElementById('coffeePopupCloseBtn');
-      const hiddenIframe = document.getElementById('hidden_iframe');
 
-      if (contactForm && hiddenIframe) {
+      if (contactForm) {
         contactForm.addEventListener('submit', function (e) {
-          setTimeout(() => {
-            contactForm.reset();
-            playSound('win');
-            coffeePopupModal?.classList.add('active');
-          }, 600);
+          e.preventDefault();
+          const formData = new FormData(contactForm);
+          const object = Object.fromEntries(formData);
+          const json = JSON.stringify(object);
+
+          fetch('https://api.web3forms.com/submit', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
+            },
+            body: json
+          })
+          .then(async (response) => {
+            let jsonResponse = await response.json();
+            if (response.status === 200) {
+              contactForm.reset();
+              playSound('win');
+              coffeePopupModal?.classList.add('active');
+            } else {
+              alert(jsonResponse.message || "Something went wrong!");
+            }
+          })
+          .catch(error => {
+            console.log(error);
+            alert("Network error! Please try again.");
+          });
         });
       }
 
